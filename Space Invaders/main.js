@@ -76,10 +76,36 @@ var SCREEN_HEIGHT = canvas.height;
 
 
 
-
+var enemies = [];
 
 
 var starEmitter = createFlyingStarsEmitter("star.png", SCREEN_WIDTH/2, 250);
+
+
+
+function initialize()
+{
+	
+	
+	var idx = 0;
+for(var y = 0; y < level1.layers[LAYER_OBJECT_ENEMIES].height; y++) {
+	for(var x = 0; x < level1.layers[LAYER_OBJECT_ENEMIES].width; x++) {
+		if(level1.layers[LAYER_OBJECT_ENEMIES].data[idx] != 0) {
+			var px = tileToPixel(x);
+			var py = tileToPixel(y);
+			var e = new Enemy(px, py);
+			enemies.push(e);
+		}
+		idx++;
+	}
+}	
+	
+	
+	
+}
+
+
+
 
 
 function run()
