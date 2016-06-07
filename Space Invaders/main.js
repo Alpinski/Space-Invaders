@@ -1,27 +1,25 @@
 var canvas = document.getElementById("gameCanvas");
 var context = canvas.getContext("2d");
 
-//Get deltaTime
-
 var startFrameMillis = Date.now();
 var endFrameMillis = Date.now();
-function getDeltaTime() // Only call this function once per frame
+
+function getDeltaTime()
 {
-endFrameMillis = startFrameMillis;
-startFrameMillis = Date.now();
-var deltaTime = (startFrameMillis - endFrameMillis) * 0.001;
-if (deltaTime > 1) // validate that the delta is within range
-{
-deltaTime = 1;
-}
-return deltaTime;
+	endFrameMillis = startFrameMillis;
+	startFrameMillis = Date.now();
+
+	var deltaTime = (startFrameMillis - endFrameMillis) * 0.001;
+
+	if(deltaTime > 1)
+		deltaTime = 1;
+		
+	return deltaTime;
 }
 var score = 0;
 
 
-
-
-
+var player = new Player();
 function runGame (deltaTime)
 {
 
@@ -37,6 +35,8 @@ function runGame (deltaTime)
 	// enemy update and draw.
 	context.restore();
 	
+	player.update(deltaTime);
+	player.draw();
 	
 	
 	// update the frame counter 
@@ -74,10 +74,10 @@ var DEBUG = 1;		// set to 0 to turn off drawing debug information
 var SCREEN_WIDTH = canvas.width;
 var SCREEN_HEIGHT = canvas.height;
 
-
+var chuckNorris = document.createElement("img");
+chuckNorris.src = "Player anim/redfighter0005.png";
 
 var enemies = [];
-
 
 var starEmitter = createFlyingStarsEmitter("star.png", SCREEN_WIDTH/2, 250);
 
@@ -85,24 +85,30 @@ var starEmitter = createFlyingStarsEmitter("star.png", SCREEN_WIDTH/2, 250);
 
 function initialize()
 {
-	
-	
-	var idx = 0;
-for(var y = 0; y < level1.layers[LAYER_OBJECT_ENEMIES].height; y++) {
-	for(var x = 0; x < level1.layers[LAYER_OBJECT_ENEMIES].width; x++) {
-		if(level1.layers[LAYER_OBJECT_ENEMIES].data[idx] != 0) {
-			var px = tileToPixel(x);
-			var py = tileToPixel(y);
-			var e = new Enemy(px, py);
-			enemies.push(e);
+	for(var layerIdx = 0; layerIdx < LAYER_COUNT; layerIdx++) 
+	{
+		cells[layerIdx] = [];
+		var idx = 0;
+		for(var y = 0; y < level1.layers[layerIdx].height; y++) 
+		{
+			cells[layerIdx][y] = [];
+			for(var x = 0; x < level1.layers[layerIdx].width; x++) 
+			{
+				if(level1.layers[layerIdx].data[idx] != 0) 
+				{
+					cells[layerIdx][y][x] = 1;
+					cells[layerIdx][y-1][x] = 1;
+					cells[layerIdx][y-1][x+1] = 1;
+					cells[layerIdx][y][x+1] = 1;
+				}
+				else if(cells[layerIdx][y][x] != 1) 
+				{
+					cells[layerIdx][y][x] = 0; 
+				}
+				idx++;
+			}
 		}
-		idx++;
 	}
-}	
-	
-	
-	
-}
 
 
 
@@ -132,9 +138,12 @@ var context = canvas.getContext("2d");
 
 
 var playerscore = 0	
-	
-window.addEventListener('keydown', function(evt) { onKeyDown(evt); }, false); 
-window.addEventListener('keyup', function(evt) { onKeyUp(evt); }, false);
+var keyboard = new Keyboard();
+if(keyboard.isKeyDown(keyboard.KEY_DOWN) == true)
+{
+	player.position.y += 1
+}
+
 
 
 
