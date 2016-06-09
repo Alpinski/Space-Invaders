@@ -1,3 +1,4 @@
+
 var Frame = function(x, y, width, height, duration){
 	this.x = x;
 	this.y = y;
@@ -22,7 +23,7 @@ var Sprite = function(filename) {
 	this.offsets = [];		// offset vectors for each animation
 	
 	this.frameTime = 0;
-	this.loop = true;	
+	this.loop = false;	
 	this.pingpong = false;
 	this.playDir = 1;
 };
@@ -33,6 +34,7 @@ Sprite.prototype.setAnimation = function(index)
 		return;
 	this.currentAnimation = index;
 	this.currentFrame = 0;
+	this.playDir = 1;
 }
 
 Sprite.prototype.getFrameWidth = function()
@@ -96,7 +98,8 @@ Sprite.prototype.update = function(dt) {
 	
 	this.frameTime += dt;
 	
-	while(this.frameTime > this.animations[this.currentAnimation][this.currentFrame].duration)
+	while(this.frameTime > this.animations[this.currentAnimation][this.currentFrame].duration
+			&& this.playDir != 0)
 	{
 		this.currentFrame+=this.playDir;		
 		
@@ -106,13 +109,21 @@ Sprite.prototype.update = function(dt) {
 		{
 			if(this.pingpong == false)
 			{
-				this.currentFrame = 0;
+				if(this.loop == true)
+				{
+					this.currentFrame = 0;
+				}
+				else
+				{
+					this.playDir = 0;
+					--this.currentFrame;
+				}
 			}
 			else
 			{
 				this.currentFrame-=this.playDir;
 				this.playDir = this.playDir*-1
-				this.currentFrame+=this.playDir;
+				this.currentFrame += this.playDir;
 			}
 		}
 		this.frameTime -= this.animations[this.currentAnimation][this.currentFrame].duration;

@@ -116,21 +116,19 @@ function initialize()
 
 function run()
 {
+
+	
 	context.fillStyle = "#000000";
 	context.fillRect(0, 0, canvas.width, canvas.height);
 	
-	var deltaTime = getDeltaTime();
 	
-	starEmitter.update(deltaTime);
 	
 	var deltaTime = getDeltaTime();
-	starEmitter.update(deltaTime);
-	starEmitter.draw();
 	
-	if(DEBUG == 1);
-	
-	player.update(deltaTime);
+		player.update(deltaTime);
 	player.draw();
+	
+
 	
 
 }
