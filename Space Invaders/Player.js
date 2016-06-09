@@ -3,13 +3,10 @@ var KEY_S = 83;
 var KEY_A = 65;
 var KEY_D = 68;
 
-var ANIM_IDLE_LEFT = 0;
-var ANIM_JUMP_LEFT = 1;
-var ANIM_WALK_LEFT = 2;
-var ANIM_IDLE_RIGHT = 3;
-var ANIM_JUMP_RIGHT = 4;
-var ANIM_WALK_RIGHT = 5;
-var ANIM_MAX = 6;
+
+var ANIM_WALK_LEFT = 0;
+var ANIM_WALK_RIGHT = 1;
+var ANIM_MAX = 2;
 
 var Player = function() 
 {
@@ -17,74 +14,54 @@ var Player = function()
 	
 	this.scale = new Vector2(0.5 ,0.5)
 	
-	this.sprites = [];
-	
-	this.sprite = new Sprite("SwordsmanIdleRight.png");
-	this.sprites[ANIM_IDLE_RIGHT] = new Sprite("SwordsmanIdleRight.png");
-	this.sprites[ANIM_IDLE_RIGHT].buildAnimation(5, 7, 162, 162, 0.05, [34, 32, 30, 24, 22, 20, 14, 12, 10, 4, 2, 0]);
-	this.sprites[ANIM_IDLE_RIGHT].setAnimationOffset( 0, -30, -115);
+	this.sprites = []; 
+	{
+		this.sprite = new Sprite("Player anim/RedSheet.png");
+		this.sprite.buildAnimation(9, 1, 383, 343, 0.05, [0, 1, 2, 3]);
+			this.sprite.setAnimationOffset(0, -55, -87);
+		this.sprite.buildAnimation(9, 1, 383, 343, 0.05, [5, 6, 7, 8]);
+			this.sprite.setAnimationOffset(0, -55, -87);
+	}
 
 	this.image = document.createElement("img");
 	this.position = new Vector2(); 	
-	this.position.set(1*TILE, 9*TILE);
 	
 	this.width = 540;
 	this.height = 536;
 	
-	this.animState = ANIM_IDLE_RIGHT
-	
 	this.velocity = new Vector2();
-	
-	this.direction = LEFT;
 	
 	this.falling = true;
 	this.jumping = false;
 
 	SetupImageEvents(this, this.image);
+	
 };
 
 Player.prototype.update = function(deltaTime)
 {
-	this.sprites[this.animState].update(deltaTime);
+	this.sprite.update(deltaTime);
 	
 	var left = false;
 	var right = false;
 	var jump = false;
 	
-	if(keyboard.isKeyDown(keyboard.KEY_LEFT) == true)
+	if(keyboard.isKeyDown(keyboard.KEY_LEFT) == true) 
 	{
 		left = true;
 		this.direction = LEFT;
-		if(this.animState != ANIM_WALK_LEFT &&
-			this.jumping == false)
-			this.animState = ANIM_WALK_LEFT;
+		if(this.sprite.currentAnimation != ANIM_WALK_LEFT)
+			this.sprite.setAnimation(ANIM_WALK_LEFT);
 	}
 
-	else if(keyboard.isKeyDown(keyboard.KEY_RIGHT) == true) 
+	if(keyboard.isKeyDown(keyboard.KEY_RIGHT) == true) 
 	{
 		right = true;
 		this.direction = RIGHT;
-		if(this.animState != ANIM_WALK_RIGHT &&
-			this.jumping == false)
-			this.animState = ANIM_WALK_RIGHT
+		if(this.sprite.currentAnimation != ANIM_WALK_RIGHT)
+			this.sprite.setAnimation(ANIM_WALK_RIGHT);
 	}
 	
-	else 
-	{
-		if(this.jumping == false && this.falling == false)
-		{
-			if(this.direction == LEFT)
-			{	
-				if(this.animState != ANIM_IDLE_LEFT)
-				this.animState = ANIM_IDLE_LEFT;
-			}
-			else
-			{
-				if(this.animState != ANIM_IDLE_RIGHT)
-					this.animState = ANIM_IDLE_RIGHT;
-			}
-		}
-	}
 	
 	if(keyboard.isKeyDown(keyboard.KEY_SPACE) == true)
 	{
@@ -95,26 +72,8 @@ Player.prototype.update = function(deltaTime)
 		iShoot = false;
 	}
 	
-	if(keyboard.isKeyDown(keyboard.KEY_UP) == true) 
-	{
-		jump = true;
-	}
-	if(this.cooldownTimer > 0)
-	{
-		this.cooldownTimer -= deltaTime;
-	}
-	if(keyboard.isKeyDown(keyboard.KEY_SPACE) == true && this.cooldownTimer <= 0) 
-	{
-		sfxFire.play();
-		this.cooldownTimer = 0.3;
-	}
-
-	
 	var wasleft = this.velocity.x < 0;
 	var wasright = this.velocity.x > 0;
-	var falling = this.falling;
-	var ddx = 0;
-	var ddy = GRAVITY;
 	
 	if (left)
 			ddx = ddx - ACCEL;
@@ -125,31 +84,6 @@ Player.prototype.update = function(deltaTime)
 			ddx = ddx + ACCEL;
 		else if (wasright)
 			ddx = ddx - FRICTION;
-		
-	if (jump && !this.jumping && !falling)
-	{
-		ddy = ddy - JUMP;
-		this.jumping = true;
-		if(this.direction == LEFT)
-			this.animState = ANIM_JUMP_LEFT;
-		else
-			this.animState = ANIM_JUMP_RIGHT;
-		}
-		
-	this.position.y = Math.floor(this.position.y + (deltaTime * this.velocity.y));
-	this.position.x = Math.floor(this.position.x + (deltaTime * this.velocity.x));
-	this.velocity.x = bound(this.velocity.x + (deltaTime * ddx), -MAXDX, MAXDX);
-	this.velocity.y = bound(this.velocity.y + (deltaTime * ddy), -MAXDY, MAXDY);
-	
-	var tx = pixelToTile(this.position.x);
-	var ty = pixelToTile(this.position.y);
-	var nx = (this.position.x)%TILE;
-	var ny = (this.position.y)%TILE;
-	var cell = cellAtTileCoord(LAYER_PLATFORMS, tx, ty);
-	var cellright = cellAtTileCoord(LAYER_PLATFORMS, tx + 1, ty);
-	var celldown = cellAtTileCoord(LAYER_PLATFORMS, tx, ty + 1);
-	var celldiag = cellAtTileCoord(LAYER_PLATFORMS, tx + 1, ty + 1)
-	
 	
 	if ((wasleft && (this.velocity.x > 0)) || (wasright && (this.velocity.x < 0)))
 	{
@@ -198,10 +132,9 @@ Player.prototype.update = function(deltaTime)
 		}
 	}
 
-	player.falling = ! (celldown || (nx && celldiag));
 }
 
 Player.prototype.draw = function()
 {
-	this.sprites[this.animState].draw(context, this.position.x, this.position.y);
+	this.sprite.draw(context, this.position.x, this.position.y);
 }

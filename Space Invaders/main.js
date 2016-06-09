@@ -110,7 +110,7 @@ function initialize()
 		}
 	}
 
-
+}
 
 
 
@@ -123,15 +123,17 @@ function run()
 	
 	starEmitter.update(deltaTime);
 	
-	
-	// Particles
 	var deltaTime = getDeltaTime();
 	starEmitter.update(deltaTime);
 	starEmitter.draw();
 	
 	if(DEBUG == 1);
+	
+	player.update(deltaTime);
+	player.draw();
+	
 
-	}
+}
 	
 var canvas = document.getElementById("gameCanvas");
 var context = canvas.getContext("2d");
@@ -140,9 +142,9 @@ var context = canvas.getContext("2d");
 var playerscore = 0	
 var keyboard = new Keyboard();
 if(keyboard.isKeyDown(keyboard.KEY_DOWN) == true)
-{
+	{
 	player.position.y += 1
-}
+	}
 
 
 
@@ -154,26 +156,25 @@ if(keyboard.isKeyDown(keyboard.KEY_DOWN) == true)
 
 
 
-//-------------------- Don't modify anything below here
 (function() {
-var onEachFrame;
-if (window.requestAnimationFrame) {
-onEachFrame = function(cb) {
-var _cb = function() { cb(); window.requestAnimationFrame(_cb); }
- _cb();
-};
-} else if (window.mozRequestAnimationFrame) {
+  var onEachFrame;
+  if (window.requestAnimationFrame) {
     onEachFrame = function(cb) {
-      var _cb = function() { cb();
-window.mozRequestAnimationFrame(_cb); } 
-_cb();
-};
-} else {
-onEachFrame = function(cb) { 
-setInterval(cb, 1000 / 60);
-} 
-}
-window.onEachFrame = onEachFrame;
- })();
+      var _cb = function() { cb(); window.requestAnimationFrame(_cb); }
+      _cb();
+    };
+  } else if (window.mozRequestAnimationFrame) {
+    onEachFrame = function(cb) {
+      var _cb = function() { cb(); window.mozRequestAnimationFrame(_cb); }
+      _cb();
+    };
+  } else {
+    onEachFrame = function(cb) {
+      setInterval(cb, 1000 / 60);
+    }
+  }
+  
+  window.onEachFrame = onEachFrame;
+})();
 
-window.onEachFrame (run);
+window.onEachFrame(run);
