@@ -19,6 +19,9 @@ function getDeltaTime()
 var score = 0;
 
 
+
+
+var background = new Background();
 var player = new Player();
 function runGame (deltaTime)
 {
@@ -34,6 +37,9 @@ function runGame (deltaTime)
 	}
 	// enemy update and draw.
 	context.restore();
+	
+	background.update(deltaTime);
+	background.draw();
 	
 	player.update(deltaTime);
 	player.draw();
@@ -59,12 +65,6 @@ function runGame (deltaTime)
 
 
 
-//Get deltaTime
-
-
-
-
-
 var fps = 0;
 var fpsCount = 0;
 var fpsTime = 0;
@@ -74,8 +74,7 @@ var DEBUG = 1;		// set to 0 to turn off drawing debug information
 var SCREEN_WIDTH = canvas.width;
 var SCREEN_HEIGHT = canvas.height;
 
-var chuckNorris = document.createElement("img");
-chuckNorris.src = "Player anim/redfighter0005.png";
+
 
 var enemies = [];
 

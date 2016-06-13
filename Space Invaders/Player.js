@@ -3,12 +3,12 @@ this.KEY_UP = 38;
 this.KEY_RIGHT = 39;
 this.KEY_DOWN = 40;
 
-
-
 var ANIM_WALK_LEFT = 0;
 var ANIM_WALK_RIGHT = 1;
-var ANIM_IDLE = 2;
-var ANIM_MAX = 3;
+var ANIM_WALK_UP = 2;
+var ANIM_WALK_DOWN = 3;
+var ANIM_IDLE = 4;
+var ANIM_MAX = 5;
 
 var Player = function() 
 {
@@ -20,11 +20,14 @@ var Player = function()
 		this.sprite.buildAnimation(9, 1, 383, 381, 0.15, [3, 2, 1, 0]);
 		this.sprite.buildAnimation(9, 1, 383, 381, 0.15, [5, 6, 7, 8]);
 		this.sprite.buildAnimation(9, 1, 383, 381, 0.15, [4]);
+		this.sprite.buildAnimation(9, 1, 383, 381, 0.15, [4]);
+		this.sprite.buildAnimation(9, 1, 383, 381, 0.15, [4]);
 	}
 	for(var i=0; i<ANIM_MAX; i++)
 	{
 		this.sprite.setAnimationOffset(i, 250, 500);
 	}
+	
 	this.image = document.createElement("img");
 	this.position = new Vector2(); 	
 	
@@ -46,8 +49,11 @@ Player.prototype.update = function(deltaTime)
 	this.velocity.set(0, 0);
 	
 	var left = false;
+	var down = false;
+	var up = false;
 	var right = false;
-	var jump = false;
+	
+	var iShoot = false;
 	
 	if(keyboard.isKeyDown(keyboard.KEY_LEFT) == true) 
 	{
@@ -56,6 +62,24 @@ Player.prototype.update = function(deltaTime)
 		if(this.sprite.currentAnimation != ANIM_WALK_LEFT)
 			this.sprite.setAnimation(ANIM_WALK_LEFT);
 	}
+	
+	else if(keyboard.isKeyDown(keyboard.KEY_DOWN) == true) 
+	{
+		this.direction = ANIM_WALK_DOWN
+		down = true;
+		if(this.sprite.currentAnimation != ANIM_WALK_DOWN)
+			this.sprite.setAnimation(ANIM_WALK_DOWN);
+	}
+	
+	else if(keyboard.isKeyDown(keyboard.KEY_UP) == true) 
+	{
+		this.direction = ANIM_WALK_UP
+		up = true;
+		if(this.sprite.currentAnimation != ANIM_WALK_UP)
+			this.sprite.setAnimation(ANIM_WALK_UP);
+	}
+
+	
 	else if(keyboard.isKeyDown(keyboard.KEY_RIGHT) == true) 
 	{
 		this.direction = ANIM_WALK_RIGHT
@@ -69,6 +93,7 @@ Player.prototype.update = function(deltaTime)
 		if(this.sprite.currentAnimation != ANIM_IDLE)
 			this.sprite.setAnimation(ANIM_IDLE);
 	}
+	
 
 	
 	if(keyboard.isKeyDown(keyboard.KEY_SPACE) == true)
@@ -80,6 +105,18 @@ Player.prototype.update = function(deltaTime)
 		iShoot = false;
 	}
 	
+	
+	
+	if (down == true)
+	{
+		this.velocity.add(new Vector2(1000))
+	}
+	if (up == true)
+	{
+		this.velocity.add(new Vector2(-1000));
+	}
+	this.position.x += this.velocity.x * deltaTime;
+	this.position.y += this.velocity.y * deltaTime;
 	if (right == true)
 	{
 		this.velocity.add(new Vector2(1000));
@@ -88,6 +125,7 @@ Player.prototype.update = function(deltaTime)
 	{
 		this.velocity.add(new Vector2(-1000))
 	}
+	
 	this.position.x += this.velocity.x * deltaTime;
 	this.position.y += this.velocity.y * deltaTime;
 	
