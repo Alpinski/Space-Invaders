@@ -2,6 +2,7 @@ this.KEY_LEFT = 37;
 this.KEY_UP = 38;
 this.KEY_RIGHT = 39;
 this.KEY_DOWN = 40;
+this.KEY_SPACE = 32;
 
 var ANIM_WALK_LEFT = 0;
 var ANIM_WALK_RIGHT = 1;
@@ -53,7 +54,7 @@ Player.prototype.update = function(deltaTime)
 	var up = false;
 	var right = false;
 	
-	var iShoot = false;
+	
 	
 	if(keyboard.isKeyDown(keyboard.KEY_LEFT) == true) 
 	{
@@ -79,7 +80,6 @@ Player.prototype.update = function(deltaTime)
 			this.sprite.setAnimation(ANIM_WALK_UP);
 	}
 
-	
 	else if(keyboard.isKeyDown(keyboard.KEY_RIGHT) == true) 
 	{
 		this.direction = ANIM_WALK_RIGHT
@@ -109,14 +109,12 @@ Player.prototype.update = function(deltaTime)
 	
 	if (down == true)
 	{
-		this.velocity.add(new Vector2(1000))
+		this.velocity.add(new Vector2(0,1000))
 	}
 	if (up == true)
 	{
-		this.velocity.add(new Vector2(-1000));
+		this.velocity.add(new Vector2(0,-1000));
 	}
-	this.position.x += this.velocity.x * deltaTime;
-	this.position.y += this.velocity.y * deltaTime;
 	if (right == true)
 	{
 		this.velocity.add(new Vector2(1000));

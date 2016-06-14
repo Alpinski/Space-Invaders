@@ -16,36 +16,87 @@ function getDeltaTime()
 		
 	return deltaTime;
 }
+
+var STATE_SPLASH = 0;
+var STATE_CONTROLS = 1;
+var STATE_GAME = 2;
+var STATE_GAMEOVER = 3;
+
+var gameState = STATE_SPLASH;
+
+
+function runSplash(deltaTime)
+{
+	if(keyboard.isKeyDown(keyboard.KEY_ENTER) == true)
+	{
+		enterPressed = true
+		gameState = STATE_CONTROLS
+	}
+	context.fillStyle = "#33ccff";
+	context.font = "128px impact";
+	context.textBaseline = "bottom";
+	context.fillText("Bounce", 250, 500);
+	context.font = "52px impact"
+	context.fillText("PRESS ENTER", 322, 700)
+}
+
+function runControls(deltaTime)
+{
+	if(keyboard.isKeyDown(keyboard.KEY_ENTER) == true)
+	{
+		if (enterPressed == false)
+		gameState = STATE_GAME
+	}
+	else
+	{
+		enterPressed = false
+	}
+	
+	context.fillStyle = "#33ccff";
+	context.font="128px impact";
+	context.textBaseline = "bottom";
+	context.fillText("CONTROLS", 180, 150);
+	context.font="72px impact";
+	context.fillText("ARROW KEYS = MOVEMENT", 55, 275)
+	context.fillText("SPACE = SHOOT", 220, 400)
+	context.fillText("ENTER = ADVANCE TO GAME", 50, 900)
+}
+
 var score = 0;
-
-
-
-
+var bullet = new Bullet();
+var bullets = [];
+var iShoot = false;
+var shootTimer = 0;
+var shootRate = 0.3;
+var keyboard = new Keyboard();
 var background = new Background();
 var player = new Player();
 function runGame (deltaTime)
 {
-
-	// enemy update and draw
-		for(var i=0; i<enemies.length; i++)
+	
+	for(var i=0; i<enemies.length; i++)
 	{
 		enemies[i].update(deltaTime);
 	}
-		for(var i=0; i<enemies.length; i++)
+	for(var i=0; i<enemies.length; i++)
 	{
 		enemies[i].draw(deltaTime);
 	}
-	// enemy update and draw.
+	
 	context.restore();
 	
 	background.update(deltaTime);
 	background.draw();
 	
+	for(var i=0; i<bullets.length; i++)
+	{
+		bullets[i].update(deltaTime);
+		bullets[i].draw();
+	}
+	
 	player.update(deltaTime);
 	player.draw();
 	
-	
-	// update the frame counter 
 	fpsTime += deltaTime;
 	fpsCount++;
 	if(fpsTime >= 1)
@@ -55,13 +106,40 @@ function runGame (deltaTime)
 		fpsCount = 0;
 	}		
 		
-	// draw the FPS
 	context.fillStyle = "#f00";
 	context.font="14px Arial";
-	context.fillText("FPS: " + fps, 3, 10, 100);
+	context.fillText("FPS: " + fps, 3, 20, 100);
+
+	if(iShoot && shootTimer <= 0)
+	{
+		shootTimer = shootRate;
+		playerShoot();
+	}
+		
+	if(shootTimer > 0)
+	shootTimer -= deltaTime;
 };
 
+function runGameOver(deltaTime)
+{
+	if(keyboard.isKeyDown(keyboard.KEY_ENTER) == true)
+	{
+		gameState = STATE_SPLASH
+	}
+	context.fillStyle = "green";
+	context.font = "128px impact";
+	context.textBaseline = "middle";
+	context.fillText("GAME OVER", 655, 375);
+	context.fillText(playerScore, 890, 520);
+	context.font = "52px impact";
+	context.fillText("PRESS ENTER", 815, 900)
+}
 
+function playerShoot()
+{
+	var bullet = new Bullet(player.position.x, player.position.y, player.direction == ANIM_IDLE)
+	bullets.push(bullet);
+}
 
 
 
@@ -124,24 +202,26 @@ function run()
 	
 	var deltaTime = getDeltaTime();
 	
-		player.update(deltaTime);
-	player.draw();
+	switch(gameState)
+		{
+			case STATE_SPLASH:
+				runSplash(deltaTime);
+				break;
+			case STATE_CONTROLS:
+				runControls(deltaTime);
+				break;
+			case STATE_GAME:
+				runGame(deltaTime);
+				break;
+			case STATE_GAMEOVER:
+				runGameOver(deltaTime);
+				break;
+		}
 	
 
 	
 
 }
-	
-var canvas = document.getElementById("gameCanvas");
-var context = canvas.getContext("2d");
-
-
-var playerscore = 0	
-var keyboard = new Keyboard();
-if(keyboard.isKeyDown(keyboard.KEY_DOWN) == true)
-	{
-	player.position.y += 1
-	}
 
 
 

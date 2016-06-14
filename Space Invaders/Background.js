@@ -3,12 +3,12 @@ var ANIM_MAX = 1;
 
 var Background = function()
 {
-	this.sprite = new Sprite("GridS.png");
-	this.sprite.buildAnimation(1, 1, 900, 600, 0, [0]);
+	this.sprite = new Sprite("Grid2.png");
+	this.sprite.buildAnimation(1, 1, 840, 980, 0, [0]);
 	
 	for(var i=0; i<ANIM_MAX; i++)
 	{
-		this.sprite.setAnimationOffset(0, -43, -54);
+		this.sprite.setAnimationOffset(0, 0, 0);
 	}
 	
 	this.image = document.createElement("img");
