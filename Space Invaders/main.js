@@ -156,39 +156,15 @@ var SCREEN_HEIGHT = canvas.height;
 
 var enemies = [];
 
-var starEmitter = createFlyingStarsEmitter("star.png", SCREEN_WIDTH/2, 250);
 
 
 
 function initialize()
 {
-	for(var layerIdx = 0; layerIdx < LAYER_COUNT; layerIdx++) 
-	{
-		cells[layerIdx] = [];
-		var idx = 0;
-		for(var y = 0; y < level1.layers[layerIdx].height; y++) 
-		{
-			cells[layerIdx][y] = [];
-			for(var x = 0; x < level1.layers[layerIdx].width; x++) 
-			{
-				if(level1.layers[layerIdx].data[idx] != 0) 
-				{
-					cells[layerIdx][y][x] = 1;
-					cells[layerIdx][y-1][x] = 1;
-					cells[layerIdx][y-1][x+1] = 1;
-					cells[layerIdx][y][x+1] = 1;
-				}
-				else if(cells[layerIdx][y][x] != 1) 
-				{
-					cells[layerIdx][y][x] = 0; 
-				}
-				idx++;
-			}
-		}
-	}
+	
 
 }
-
+var spawnTimer = 0;
 
 
 function run()
@@ -218,6 +194,51 @@ function run()
 				break;
 		}
 	
+	
+	
+	
+	
+	
+	
+
+	
+// update the Enemies 
+for(var i=0; i<Enemies.length; i++)
+{
+
+Enemies[i].x = Enemies[i].x + Enemies[i].velocityX * deltaTime;
+Enemies[i].y = Enemies[i].y + Enemies[i].velocityY * deltaTime;
+
+
+if(Enemies[i].x < -SCREEN_WIDTH)
+{ 
+   Enemies[i].x = SCREEN_WIDTH
+}
+if(Enemies[i].x > SCREEN_WIDTH)
+{
+	Enemies[i].x = -SCREEN_WIDTH
+}
+
+
+}
+	
+	// draw all the enemies
+for(var i=0; i<Enemies.length; i++)
+{
+context.drawImage(Enemies[i].image, Enemies[i].x - Enemies[i].width/2,
+Enemies[i].y - Enemies[i].height/2);
+}
+spawnTimer -= deltaTime;
+if(spawnTimer <= 0)
+{
+spawnTimer = 3;	
+spawnEnemies()
+}
+	
+
+
+
+
 
 	
 

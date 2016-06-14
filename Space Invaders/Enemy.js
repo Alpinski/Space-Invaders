@@ -1,92 +1,56 @@
 
-var Enemy = function(x, y)
+var ENEMY_SPEED = 80;
+
+
+var BULLET_SPEED = 1.5;
+var Enemies = [];
+
+function rand(floor, ceil)
 {
-	
-	
-	//new
-	this.sprite = new Sprite("fighter1.png")
-	this.sprite.buildAnimation(2, 1, 48, 48, 0.2, [0,1]);
-	this.sprite.setAnimation(0, -35, -40);
-	
-	this.position = new Vector2();
-	this.position.set(x, y); 
-	
-
-   
-	this.velocity = new Vector2();
-	
-	this.moveRight = true;
-	this.pause = 0;
-	// new
-	
-	
-};
-
-
-
-
-
-
-
-Enemy.prototype.update = function(deltaTime)
-{
-	this.sprite.update(deltaTime);
-	 
-	if(this.pause > 0)
-	{
-		this.pause -=deltaTime;
-		
-	}
-	else
-	{
-		var ddx = 0;
-		
-		var tx = pixelToTile(this.position.x);
-		var ty = pixelToTile(this.position.y);
-		var nx = (this.position.x)%TILE;
-		var ny = (this.position.y)%TILE;
-		var cell = cellAtTileCoord(LAYER_PLATFORMS, tx, ty);
-		var cellright = cellAtTileCoord(LAYER_PLATFORMS, tx + 1, ty);
-		var celldown = cellAtTileCoord(LAYER_PLATFORMS, tx, ty + 1);
-		var celldiag = cellAtTileCoord(LAYER_PLATFORMS, tx + 1, ty + 1);
-		
-		if(this.moveRight)
-		{
-			if(celldiag && !cellright){
-				ddx = ddx + ENEMY_ACCEL; // Enemy wants to move right.			}
-		}
-		else {
-			this.velocity.x = 0;
-			this.moveRight = false;
-			this.pause = 0.5;
-		}
-	}
-	
-	if(!this.moveRight)
-	{
-		if(celldown && !cell) {
-			ddx = ddx - ENEMY_ACCEL;  // enemy wants to move left    
-		}
-		else {
-			this.velocity.x = 0;
-			this.moveRight = true;
-			this.pause = 0.5;
-		}
-	}
-	this.position.x = Math.floor(this.position.x + (deltaTime * this.velocity.x));
-	this.velocity.x = bound(this.velocity.x + (deltaTime * ddx),
-	                             -ENEMY_MAXDX, ENEMY_MAXDX);
-
-								 
+return Math.floor( (Math.random()* (ceil-floor)) +floor );
 }
-// NEW
-	
-	
-	
-};
 
-Enemy.prototype.draw = function()
+function spawnEnemies()
 {
-	this.sprite.draw(context, this.position.x, this.position.y);
+
+
+var type = rand(0, 3);
+
+var Enemy = {};
+Enemy.image = document.createElement("img");
+Enemy.image.src = "alienship.png";
+Enemy.width = 69;
+Enemy.height = 75;
+
+var x = SCREEN_WIDTH/2;
+var y = SCREEN_HEIGHT/8;
+;
+var dirX = rand(5,-5);
+var dirY = rand(-2,-2);
+
+var magnitude = (dirX * dirX) + (dirY * dirY);
+if(magnitude != 0)
+{
+var oneOverMag = 1 / Math.sqrt(magnitude);
+dirX *= oneOverMag;
+dirY *= oneOverMag;
+}
+
+var movX = dirX * SCREEN_HEIGHT;
+var movY = dirY * SCREEN_HEIGHT;
+
+Enemy.x = x + movX;
+Enemy.y = y + movY;
+
+Enemy.velocityX = -dirX * ENEMY_SPEED;
+Enemy.velocityY = -dirY * ENEMY_SPEED;
+
+Enemies.push(Enemy);
+
 	
-};
+
+
+	
+	
+	
+}
