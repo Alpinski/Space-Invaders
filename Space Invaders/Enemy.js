@@ -1,8 +1,4 @@
-var ENEMY_SPEED = 80;
-
-var ENEMY_SPEED = 800;
-
-
+var ENEMY_SPEED = 150;
 
 var BULLET_SPEED = 1.5;
 var Enemies = [];
@@ -23,7 +19,7 @@ Enemy.image = document.createElement("img");
 Enemy.image.src = "alienship.png";
 Enemy.width = 69;
 Enemy.height = 75;
-isDead: false
+Enemy.isDead = false;
 Enemy.length = 4;
 
 

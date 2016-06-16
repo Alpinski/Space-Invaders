@@ -26,11 +26,11 @@ var Player = function()
 	}
 	for(var i=0; i<ANIM_MAX; i++)
 	{
-		this.sprite.setAnimationOffset(i, 370, 850);
+		this.sprite.setAnimationOffset(i, -57, -57);
 	}
 	
 	this.image = document.createElement("img");
-	this.position = new Vector2(); 	
+	this.position = new Vector2(370, 850); 	
 	
 	this.direction = ANIM_IDLE
 	

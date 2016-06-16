@@ -63,7 +63,6 @@ function runControls(deltaTime)
 }
 
 var score = 0;
-var bullet = new Bullet();
 var bullets = [];
 var iShoot = false;
 var shootTimer = 0;
@@ -95,22 +94,22 @@ function runGame (deltaTime)
 	
 	
 	// update the Enemies 
-for(var i=0; i<Enemies.length; i++)
-{
+	for(var i=0; i<Enemies.length; i++)
+	{
 
-	Enemies[i].x = Enemies[i].x + Enemies[i].velocityX * deltaTime;
-	Enemies[i].y = Enemies[i].y + Enemies[i].velocityY * deltaTime;
+		Enemies[i].x = Enemies[i].x + Enemies[i].velocityX * deltaTime;
+		Enemies[i].y = Enemies[i].y + Enemies[i].velocityY * deltaTime;
 
 
-	if(Enemies[i].x < -SCREEN_WIDTH)
-		{ 
-		   Enemies[i].x = SCREEN_WIDTH
-		}
-	if(Enemies[i].x > SCREEN_WIDTH)
-		{
-			Enemies[i].x = -SCREEN_WIDTH
-		}
-}
+		if(Enemies[i].x < -SCREEN_WIDTH)
+			{ 
+			   Enemies[i].x = SCREEN_WIDTH
+			}
+		if(Enemies[i].x > SCREEN_WIDTH)
+			{
+				Enemies[i].x = -SCREEN_WIDTH
+			}
+	}
 
 
 
@@ -156,38 +155,37 @@ for(var i=0; i<Enemies.length; i++)
 
 	for(var i=0; i<bullets.length; i++)
 	{
-		bullets[i].x += bullets[i].velocityX * deltaTime;
-		bullets[i].y += bullets[i].velocityY * deltaTime;
-	}
-	for(var i=0; i<bullets.length; i++)
-	{
-		if(bullets[i].x < -bullets[i].width || bullets[i].x > SCREEN_WIDTH || bullets[i].y < -bullets[i].height || bullets[i].y > SCREEN_HEIGHT)
+		if(bullets[i].x < 0 || bullets[i].x > SCREEN_WIDTH || bullets[i].y < 0 || bullets[i].y > SCREEN_HEIGHT)
 		{
-		bullets.splice(i, 1);
-		break;
+			bullets.splice(i, 1);
+			break;
 		}
 	}
 	
-	if(bullet.isDead == false)
+	for(var i=0; i<bullets.length; i++)
 	{
-		bullet.x += bullet.velocityX;
-		bullet.y += bullet.velocityY;
-		context.drawImage(bullet.image, bullet.x - bullet.width/2, bullet.y - bullet.height/2);
-		
-		if(Enemies.isDead == false)
+		var kill = false;
+		for(var j=0; j<Enemies.length; j++)
 		{
-			var hit = intersects(bullet.x, bullet.y, bullet.width, bullet.height, Enemies.x, Enemies.y, Enemies.width, Enemies.height);
-			if(hit == true)
+			if(Enemies[j].isDead == false)
 			{
-				bullet.isDead = true;
-				Enemies.isDead = true;
+				var hit = intersects(bullets[i].x, bullets[i].y, bullets[i].width, bullets[i].height, Enemies[j].x, Enemies[j].y, Enemies[j].width, Enemies[j].height);
+				if(hit == true)
+				{
+					kill = true;
+					Enemies.splice(j, 1);
+					break;
+				}
 			}
 		}
-		if(bullet.x < 0 || bullet.x > SCREEN_WIDTH || bullet.y < 0 || bullet.y > SCREEN_HEIGHT)
+		if(kill)
 		{
-			bullet.isDead = true;
+			bullets.splice(i, 1);
+			break;
 		}
 	}
+	
+	
 };
 
 function runGameOver(deltaTime)
