@@ -154,6 +154,20 @@ for(var i=0; i<Enemies.length; i++)
 	if(shootTimer > 0)
 	shootTimer -= deltaTime;
 
+	for(var i=0; i<bullets.length; i++)
+	{
+		bullets[i].x += bullets[i].velocityX * deltaTime;
+		bullets[i].y += bullets[i].velocityY * deltaTime;
+	}
+	for(var i=0; i<bullets.length; i++)
+	{
+		if(bullets[i].x < -bullets[i].width || bullets[i].x > SCREEN_WIDTH || bullets[i].y < -bullets[i].height || bullets[i].y > SCREEN_HEIGHT)
+		{
+		bullets.splice(i, 1);
+		break;
+		}
+	}
+	
 	if(bullet.isDead == false)
 	{
 		bullet.x += bullet.velocityX;

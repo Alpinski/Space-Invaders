@@ -1,9 +1,7 @@
-<<<<<<< HEAD
 var ENEMY_SPEED = 80;
-=======
 
 var ENEMY_SPEED = 800;
->>>>>>> dc32d41d7b77fd9fca1da70d23c879f158505459
+
 
 
 var BULLET_SPEED = 1.5;
@@ -25,12 +23,8 @@ Enemy.image = document.createElement("img");
 Enemy.image.src = "alienship.png";
 Enemy.width = 69;
 Enemy.height = 75;
-<<<<<<< HEAD
 isDead: false
-=======
 Enemy.length = 4;
-
->>>>>>> dc32d41d7b77fd9fca1da70d23c879f158505459
 
 
 var x = SCREEN_WIDTH/2;
