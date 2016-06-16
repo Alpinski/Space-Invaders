@@ -94,18 +94,21 @@ Player.prototype.update = function(deltaTime)
 			this.sprite.setAnimation(ANIM_IDLE);
 	}
 	
-
+	if(this.cooldownTimer > 0)
+	{
+		this.cooldownTimer -= deltaTime;
+	}
 	
-	if(keyboard.isKeyDown(keyboard.KEY_SPACE) == true)
+	if(keyboard.isKeyDown(keyboard.KEY_SPACE) == true && this.cooldownTimer <= 0)
 	{
 		iShoot = true;
+		sfxFire.play();
+		this.cooldownTimer = 0.3;
 	}
-		else
+	else
 	{
 		iShoot = false;
 	}
-	
-	
 	
 	if (down == true)
 	{

@@ -159,11 +159,6 @@ var enemies = [];
 
 
 
-function initialize()
-{
-	
-
-}
 var spawnTimer = 0;
 
 
@@ -206,35 +201,35 @@ function run()
 for(var i=0; i<Enemies.length; i++)
 {
 
-Enemies[i].x = Enemies[i].x + Enemies[i].velocityX * deltaTime;
-Enemies[i].y = Enemies[i].y + Enemies[i].velocityY * deltaTime;
+	Enemies[i].x = Enemies[i].x + Enemies[i].velocityX * deltaTime;
+	Enemies[i].y = Enemies[i].y + Enemies[i].velocityY * deltaTime;
 
 
-if(Enemies[i].x < -SCREEN_WIDTH)
-{ 
-   Enemies[i].x = SCREEN_WIDTH
-}
-if(Enemies[i].x > SCREEN_WIDTH)
-{
-	Enemies[i].x = -SCREEN_WIDTH
-}
+	if(Enemies[i].x < -SCREEN_WIDTH)
+		{ 
+		   Enemies[i].x = SCREEN_WIDTH
+		}
+	if(Enemies[i].x > SCREEN_WIDTH)
+		{
+			Enemies[i].x = -SCREEN_WIDTH
+		}
 
 
-}
-	
-	// draw all the enemies
-for(var i=0; i<Enemies.length; i++)
-{
-context.drawImage(Enemies[i].image, Enemies[i].x - Enemies[i].width/2,
-Enemies[i].y - Enemies[i].height/2);
-}
-spawnTimer -= deltaTime;
-if(spawnTimer <= 0)
-{
-spawnTimer = 3;	
-spawnEnemies()
 }
 	
+		// draw all the enemies
+	for(var i=0; i<Enemies.length; i++)
+	{
+		context.drawImage(Enemies[i].image, Enemies[i].x - Enemies[i].width/2,
+		Enemies[i].y - Enemies[i].height/2);
+	}
+	spawnTimer -= deltaTime;
+	if(spawnTimer <= 0)
+	{
+		spawnTimer = 3;	
+		spawnEnemies()
+	}
+	
 
 
 
@@ -244,7 +239,34 @@ spawnEnemies()
 
 }
 
+var sfxFire;
+function initialize()
+{
+	musicBackground = new Howl(
+	{
+		urls: ["background.ogg"],
+		loop: true,
+		buffer: true,
+		volume: 0.5
+	} );
+		musicBackground.play();
+		
+		sfxFire = new Howl(
+		{
+			urls: ["fireEffect.ogg"],
+			buffer: true,
+			volume: 1,
+			
+			onend: function()
+			{
+				isSfxPlaying = false;
+			}
+		} );
 
+
+}
+
+initialize();
 
 
 
