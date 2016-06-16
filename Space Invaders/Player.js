@@ -18,15 +18,15 @@ var Player = function()
 	this.sprites = []; 
 	{
 		this.sprite = new Sprite("Player anim/RedSheet.png");
-		this.sprite.buildAnimation(9, 1, 383, 381, 0.15, [3, 2, 1, 0]);
-		this.sprite.buildAnimation(9, 1, 383, 381, 0.15, [5, 6, 7, 8]);
-		this.sprite.buildAnimation(9, 1, 383, 381, 0.15, [4]);
-		this.sprite.buildAnimation(9, 1, 383, 381, 0.15, [4]);
-		this.sprite.buildAnimation(9, 1, 383, 381, 0.15, [4]);
+		this.sprite.buildAnimation(9, 1, 114, 115, 0.15, [3, 2, 1, 0]);
+		this.sprite.buildAnimation(9, 1, 114, 115, 0.15, [5, 6, 7, 8]);
+		this.sprite.buildAnimation(9, 1, 114, 115, 0.15, [4]);
+		this.sprite.buildAnimation(9, 1, 114, 115, 0.15, [4]);
+		this.sprite.buildAnimation(9, 1, 114, 115, 0.15, [4]);
 	}
 	for(var i=0; i<ANIM_MAX; i++)
 	{
-		this.sprite.setAnimationOffset(i, 250, 500);
+		this.sprite.setAnimationOffset(i, 370, 850);
 	}
 	
 	this.image = document.createElement("img");
