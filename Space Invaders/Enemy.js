@@ -1,5 +1,5 @@
 
-var ENEMY_SPEED = 80;
+var ENEMY_SPEED = 800;
 
 
 var BULLET_SPEED = 1.5;
@@ -21,12 +21,15 @@ Enemy.image = document.createElement("img");
 Enemy.image.src = "alienship.png";
 Enemy.width = 69;
 Enemy.height = 75;
+Enemy.length = 4;
+
+
 
 var x = SCREEN_WIDTH/2;
-var y = SCREEN_HEIGHT/8;
+var y = SCREEN_HEIGHT/4;
 ;
-var dirX = rand(0,2);
-var dirY = rand(-2,-2);
+var dirX = rand(-2,2);
+var dirY = rand(0,0);
 
 var magnitude = (dirX * dirX) + (dirY * dirY);
 if(magnitude != 0)

@@ -111,6 +111,10 @@ for(var i=0; i<Enemies.length; i++)
 			Enemies[i].x = -SCREEN_WIDTH
 		}
 }
+
+
+
+
 		// draw all the enemies
 	for(var i=0; i<Enemies.length; i++)
 	{
