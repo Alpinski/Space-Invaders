@@ -25,7 +25,7 @@ Enemy.height = 75;
 var x = SCREEN_WIDTH/2;
 var y = SCREEN_HEIGHT/8;
 ;
-var dirX = rand(5,-5);
+var dirX = rand(0,2);
 var dirY = rand(-2,-2);
 
 var magnitude = (dirX * dirX) + (dirY * dirY);
