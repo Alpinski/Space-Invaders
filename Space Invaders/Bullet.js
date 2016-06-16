@@ -4,7 +4,7 @@ var Bullet = function(x, y)
 	this.sprite.buildAnimation(1, 4, 14, 14, 0.15, [0, 1, 2,3]);
 	this.sprite.setAnimationOffset(0, -7, -7);
 	this.sprite.loop = true
-	this.position = new Vector2();
+	this.position = new Vector2(370, 850);
 	this.position.set(x, y);
 	
 	this.width = 14;

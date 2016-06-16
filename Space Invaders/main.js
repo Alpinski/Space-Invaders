@@ -111,9 +111,6 @@ function runGame (deltaTime)
 			}
 	}
 
-
-
-
 		// draw all the enemies
 	for(var i=0; i<Enemies.length; i++)
 	{
@@ -126,6 +123,89 @@ function runGame (deltaTime)
 		spawnTimer = 3;	
 		spawnEnemies()
 	}
+	
+	
+	
+	
+	
+	
+	
+	// update the Enemies2 
+for(var i=0; i<Enemies2.length; i++)
+{
+
+	Enemies2[i].x = Enemies2[i].x + Enemies2[i].velocityX * deltaTime;
+	Enemies2[i].y = Enemies2[i].y + Enemies2[i].velocityY * deltaTime;
+
+
+	if(Enemies2[i].x < -SCREEN_WIDTH)
+		{ 
+		   Enemies2[i].x = SCREEN_WIDTH
+		}
+	if(Enemies2[i].x > SCREEN_WIDTH)
+		{
+			Enemies2[i].x = -SCREEN_WIDTH
+		}
+}
+
+
+		// draw all the enemies2
+	for(var i=0; i<Enemies2.length; i++)
+	{
+		context.drawImage(Enemies2[i].image, Enemies2[i].x - Enemies2[i].width/2,
+		Enemies2[i].y - Enemies2[i].height/2);
+	}
+	spawnTimer -= deltaTime;
+	if(spawnTimer <= 0)
+	{
+		spawnTimer = 3;	
+		spawnEnemies2()
+	}
+	
+	
+	
+	
+	
+	// update the Enemies3 
+for(var i=0; i<Enemies3.length; i++)
+{
+
+	Enemies3[i].x = Enemies3[i].x + Enemies3[i].velocityX * deltaTime;
+	Enemies3[i].y = Enemies3[i].y + Enemies3[i].velocityY * deltaTime;
+
+
+	if(Enemies3[i].x < -SCREEN_WIDTH)
+		{ 
+		   Enemies3[i].x = SCREEN_WIDTH
+		}
+	if(Enemies3[i].x > SCREEN_WIDTH)
+		{
+			Enemies3[i].x = -SCREEN_WIDTH
+		}
+}
+
+
+		// draw all the enemies3
+	for(var i=0; i<Enemies3.length; i++)
+	{
+		context.drawImage(Enemies3[i].image, Enemies3[i].x - Enemies3[i].width/2,
+		Enemies3[i].y - Enemies3[i].height/2);
+	}
+	spawnTimer -= deltaTime;
+	if(spawnTimer <= 0)
+	{
+		spawnTimer = 3;	
+		spawnEnemies3()
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	
@@ -223,8 +303,8 @@ var SCREEN_HEIGHT = canvas.height;
 
 
 var enemies = [];
-
-
+var enemies2 = [];
+var enemies3 = [];
 
 var sfxFire;
 function initialize()
