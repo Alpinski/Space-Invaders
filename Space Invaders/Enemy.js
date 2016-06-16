@@ -1,4 +1,3 @@
-
 var ENEMY_SPEED = 80;
 
 
@@ -21,6 +20,8 @@ Enemy.image = document.createElement("img");
 Enemy.image.src = "alienship.png";
 Enemy.width = 69;
 Enemy.height = 75;
+isDead: false
+
 
 var x = SCREEN_WIDTH/2;
 var y = SCREEN_HEIGHT/8;

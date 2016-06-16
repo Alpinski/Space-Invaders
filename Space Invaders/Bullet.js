@@ -1,3 +1,5 @@
+
+var isDead;
 var Bullet = function(x, y)
 {
 	this.sprite = new Sprite("Bullet.png");
@@ -9,6 +11,8 @@ var Bullet = function(x, y)
 	
 	
 	this.velocity = new Vector2(0,-300);
+	
+	
 }
 
 Bullet.prototype.update = function(deltaTime)

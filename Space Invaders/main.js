@@ -118,6 +118,27 @@ function runGame (deltaTime)
 		
 	if(shootTimer > 0)
 	shootTimer -= deltaTime;
+
+	if(bullet.isDead == false)
+	{
+		bullet.x += bullet.velocityX;
+		bullet.y += bullet.velocityY;
+		context.drawImage(bullet.image, bullet.x - bullet.width/2, bullet.y - bullet.height/2);
+		
+		if(Enemies.isDead == false)
+		{
+			var hit = intersects(bullet.x, bullet.y, bullet.width, bullet.height, Enemies.x, Enemies.y, Enemies.width, Enemies.height);
+			if(hit == true)
+			{
+				bullet.isDead = true;
+				Enemies.isDead = true;
+			}
+		}
+		if(bullet.x < 0 || bullet.x > SCREEN_WIDTH || bullet.y < 0 || bullet.y > SCREEN_HEIGHT)
+		{
+			bullet.isDead = true;
+		}
+	}
 };
 
 function runGameOver(deltaTime)
@@ -158,7 +179,32 @@ var enemies = [];
 
 
 
+var sfxFire;
+function initialize()
+{
+	musicBackground = new Howl(
+	{
+		urls: ["background.ogg"],
+		loop: true,
+		buffer: true,
+		volume: 0.5
+	} );
+		musicBackground.play();
+		
+		sfxFire = new Howl(
+		{
+			urls: ["fireEffect.ogg"],
+			buffer: true,
+			volume: 1,
+			
+			onend: function()
+			{
+				isSfxPlaying = false;
+			}
+		} );
 
+
+}
 var spawnTimer = 0;
 
 
@@ -236,33 +282,6 @@ for(var i=0; i<Enemies.length; i++)
 
 
 	
-
-}
-
-var sfxFire;
-function initialize()
-{
-	musicBackground = new Howl(
-	{
-		urls: ["background.ogg"],
-		loop: true,
-		buffer: true,
-		volume: 0.5
-	} );
-		musicBackground.play();
-		
-		sfxFire = new Howl(
-		{
-			urls: ["fireEffect.ogg"],
-			buffer: true,
-			volume: 1,
-			
-			onend: function()
-			{
-				isSfxPlaying = false;
-			}
-		} );
-
 
 }
 
