@@ -74,14 +74,7 @@ var player = new Player();
 function runGame (deltaTime)
 {
 	
-	for(var i=0; i<enemies.length; i++)
-	{
-		enemies[i].update(deltaTime);
-	}
-	for(var i=0; i<enemies.length; i++)
-	{
-		enemies[i].draw(deltaTime);
-	}
+	
 	
 	context.restore();
 	
@@ -96,6 +89,48 @@ function runGame (deltaTime)
 	
 	player.update(deltaTime);
 	player.draw();
+	
+	
+	
+	
+	
+	// update the Enemies 
+for(var i=0; i<Enemies.length; i++)
+{
+
+	Enemies[i].x = Enemies[i].x + Enemies[i].velocityX * deltaTime;
+	Enemies[i].y = Enemies[i].y + Enemies[i].velocityY * deltaTime;
+
+
+	if(Enemies[i].x < -SCREEN_WIDTH)
+		{ 
+		   Enemies[i].x = SCREEN_WIDTH
+		}
+	if(Enemies[i].x > SCREEN_WIDTH)
+		{
+			Enemies[i].x = -SCREEN_WIDTH
+		}
+}
+
+
+
+
+		// draw all the enemies
+	for(var i=0; i<Enemies.length; i++)
+	{
+		context.drawImage(Enemies[i].image, Enemies[i].x - Enemies[i].width/2,
+		Enemies[i].y - Enemies[i].height/2);
+	}
+	spawnTimer -= deltaTime;
+	if(spawnTimer <= 0)
+	{
+		spawnTimer = 3;	
+		spawnEnemies()
+	}
+	
+	
+	
+	
 	
 	fpsTime += deltaTime;
 	fpsCount++;
@@ -235,46 +270,6 @@ function run()
 				break;
 		}
 	
-	
-	
-	
-	
-	
-	
-
-	
-// update the Enemies 
-for(var i=0; i<Enemies.length; i++)
-{
-
-	Enemies[i].x = Enemies[i].x + Enemies[i].velocityX * deltaTime;
-	Enemies[i].y = Enemies[i].y + Enemies[i].velocityY * deltaTime;
-
-
-	if(Enemies[i].x < -SCREEN_WIDTH)
-		{ 
-		   Enemies[i].x = SCREEN_WIDTH
-		}
-	if(Enemies[i].x > SCREEN_WIDTH)
-		{
-			Enemies[i].x = -SCREEN_WIDTH
-		}
-
-
-}
-	
-		// draw all the enemies
-	for(var i=0; i<Enemies.length; i++)
-	{
-		context.drawImage(Enemies[i].image, Enemies[i].x - Enemies[i].width/2,
-		Enemies[i].y - Enemies[i].height/2);
-	}
-	spawnTimer -= deltaTime;
-	if(spawnTimer <= 0)
-	{
-		spawnTimer = 3;	
-		spawnEnemies()
-	}
 	
 
 
