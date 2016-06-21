@@ -4,7 +4,7 @@ var ANIM_MAX = 1;
 var posY = 0
 
 
-var Background = function()
+var Background = function(deltaTime)
 {
 	this.sprite = new Sprite("Grid2.png");
 	this.sprite.buildAnimation(1, 1, 840, 980, 0, [0]);
@@ -24,7 +24,7 @@ var Background = function()
 Background.prototype.update = function(deltaTime)
 {
 	this.sprite.update(deltaTime);
-	posY += 1;
+	posY += 2;
 	
 	if(posY >= SCREEN_HEIGHT)
 	{

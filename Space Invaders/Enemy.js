@@ -17,8 +17,8 @@ var type = rand(0, 3);
 var Enemy = {};
 Enemy.image = document.createElement("img");
 Enemy.image.src = "alienship.png";
-Enemy.width = 69;
-Enemy.height = 75;
+Enemy.width = 91;
+Enemy.height = 86;
 Enemy.isDead = false;
 Enemy.length = 4;
 
@@ -46,10 +46,10 @@ Enemy.y = y + movY;
 Enemy.velocityX = -dirX * ENEMY_SPEED;
 Enemy.velocityY = -dirY * ENEMY_SPEED;
  
- 
-
+ 		
 
 Enemies.push(Enemy);
+
 
 	
 

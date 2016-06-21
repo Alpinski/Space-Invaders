@@ -9,16 +9,12 @@ var Bullet = function(x, y)
 	
 	this.width = 14;
 	this.height = 14;
-	
-	this.velocity = new Vector2(0,-500);
-	
-	
 }
 
 Bullet.prototype.update = function(deltaTime)
 {
 	this.sprite.update(deltaTime);
-	this.position.y = Math.round(this.position.y + (deltaTime * this.velocity.y));
+	this.position.y = this.position.y - 5;
 }
 
 Bullet.prototype.draw = function()

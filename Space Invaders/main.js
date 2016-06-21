@@ -33,9 +33,9 @@ function runSplash(deltaTime)
 		gameState = STATE_CONTROLS
 	}
 	context.fillStyle = "#33ccff";
-	context.font = "128px impact";
+	context.font = "100px impact";
 	context.textBaseline = "bottom";
-	context.fillText("Bounce", 250, 500);
+	context.fillText("Kill The Overlords", 68, 500);
 	context.font = "52px impact"
 	context.fillText("PRESS ENTER", 322, 700)
 }
@@ -68,6 +68,7 @@ var iShoot = false;
 var shootTimer = 0;
 var shootRate = 0.3;
 var keyboard = new Keyboard();
+var Enemies = [];
 var background = new Background();
 var player = new Player();
 function runGame (deltaTime)
@@ -97,8 +98,7 @@ function runGame (deltaTime)
 	for(var i=0; i<Enemies.length; i++)
 	{
 
-		Enemies[i].x = Enemies[i].x + Enemies[i].velocityX * deltaTime;
-		Enemies[i].y = Enemies[i].y + Enemies[i].velocityY * deltaTime;
+		Enemies[i].x += 1;
 
 
 		if(Enemies[i].x < -SCREEN_WIDTH)
@@ -114,14 +114,15 @@ function runGame (deltaTime)
 		// draw all the enemies
 	for(var i=0; i<Enemies.length; i++)
 	{
-		context.drawImage(Enemies[i].image, Enemies[i].x - Enemies[i].width/2,
-		Enemies[i].y - Enemies[i].height/2);
+		context.drawImage(Enemies[i].image, Enemies[i].x,
+		Enemies[i].y);
 	}
 	spawnTimer -= deltaTime;
 	if(spawnTimer <= 0)
 	{
 		spawnTimer = 3;	
 		spawnEnemies()
+
 	}
 	
 	
@@ -235,37 +236,28 @@ for(var i=0; i<Enemies3.length; i++)
 
 	for(var i=0; i<bullets.length; i++)
 	{
-		if(bullets[i].x < 0 || bullets[i].x > SCREEN_WIDTH || bullets[i].y < 0 || bullets[i].y > SCREEN_HEIGHT)
+		if(bullets[i].position.x < 0 || bullets[i].position.x > SCREEN_WIDTH || bullets[i].position.y < 0 || bullets[i].position.y > SCREEN_HEIGHT)
 		{
 			bullets.splice(i, 1);
 			break;
 		}
 	}
-	
+
 	for(var i=0; i<bullets.length; i++)
 	{
-		var kill = false;
 		for(var j=0; j<Enemies.length; j++)
 		{
 			if(Enemies[j].isDead == false)
 			{
-				var hit = intersects(bullets[i].x, bullets[i].y, bullets[i].width, bullets[i].height, Enemies[j].x, Enemies[j].y, Enemies[j].width, Enemies[j].height);
-				if(hit == true)
+				if( intersects(bullets[i].position.x, bullets[i].position.y, bullets[i].width, bullets[i].height, Enemies[j].x, Enemies[j].y, Enemies[j].width, Enemies[j].height) == true)
 				{
-					kill = true;
 					Enemies.splice(j, 1);
+					bullets.splice(i, 1);
 					break;
 				}
 			}
 		}
-		if(kill)
-		{
-			bullets.splice(i, 1);
-			break;
-		}
 	}
-	
-	
 };
 
 function runGameOver(deltaTime)
@@ -361,15 +353,6 @@ function run()
 				runGameOver(deltaTime);
 				break;
 		}
-	
-	
-
-
-
-
-
-	
-
 }
 
 initialize();
